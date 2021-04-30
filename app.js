@@ -1,18 +1,24 @@
 let board = document.getElementById("board")
-var elem = document.createElement("img");
-elem.className = "image"
-elem.src = 'images/queen.png'
-var elem2 = document.createElement("img");
-elem2.className = "image"
-elem2.src = 'images/queen.png'
-
+const initState = [
+["rb","nb","bb","qb","kb","bb","nb","rb"],
+["pb","pb","pb","pb","pb","pb","pb","pb"],
+[0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0],
+["pw","pw","pw","pw","pw","pw","pw","pw"],
+["rw","nw","bw","qw","kw","bw","nw","rw"]]
+let currState = initState
 let clickx = null
 let clicky = null
 let piece = null
+
+let whiteTurn = true
 for(i = 0; i<8;i++){
     let row = document.createElement("div")
     row.className = "row"
     for (j = 0;j<8;j++){
+
         let square = document.createElement("div")
         let x = j.toString()
         let y = i.toString()
@@ -29,10 +35,17 @@ for(i = 0; i<8;i++){
                 clickx = j
                 clicky = i
                 piece = square.firstChild
+                console.log(piece.src[piece.src.length - 5])
+                if((whiteTurn && piece.src[piece.src.length - 5] !== 'w')||(!whiteTurn && piece.src[piece.src.length - 5] === 'w')){
+                    piece = null
+                }
+                
+
             }
             else if(piece){
                 square.appendChild(piece)
                 piece = null
+                whiteTurn = !whiteTurn
             }
             console.log(square.id)
             console.log(piece)
@@ -40,11 +53,11 @@ for(i = 0; i<8;i++){
             console.log(square.hasChildNodes())
 
         })
-        if(i == 4 && j == 3){
+        if(initState[i][j] != 0){
+            var elem = document.createElement("img");
+            elem.className = "image"
+            elem.src = 'images/'+initState[i][j]+'.png'
             square.appendChild(elem)
-        }
-        if(i == 3 && j == 4){
-            square.appendChild(elem2)
         }
         row.appendChild(square)
 
