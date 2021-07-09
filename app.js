@@ -1,10 +1,31 @@
-let board = document.getElementById('board')
 import {initState} from './initState.js'
+import moveLogic from './logic.js'
+function reDraw (state) {
+    for (let y = 0; y < 8; y++) {
+        for (let x = 0; x < 8; x++) {
+            let id = x + ',' + y
+            let square = document.getElementById(id)
+            if (square.hasChildNodes()) {
+                square.removeChild(square.firstChild)
+            }
+            if (state[y][x] != 0) {
+
+                var elem = document.createElement('img')
+                elem.className = 'image'
+                elem.src = 'images/' + state[y][x] + '.png'
+                
+                square.appendChild(elem)
+            }
+        }
+    }
+}
+let board = document.getElementById('board')
+let saveButton = document.getElementById('save')
+let loadButton = document.getElementById('load')
 let currState = initState
 let clickx = null
 let clicky = null
 let piece = null
-let pieceType = null
 let whiteTurn = true
 
 for (let i = 0; i < 8; i++) {
@@ -23,7 +44,7 @@ for (let i = 0; i < 8; i++) {
         }
         square.addEventListener('click', () => {
 
-            if (square.hasChildNodes()) {
+            if (square.hasChildNodes() && !piece) {
 
                 clickx = x
                 clicky = y
@@ -34,12 +55,14 @@ for (let i = 0; i < 8; i++) {
                 }
             } else if (piece) {
 
-                square.appendChild(piece)
-                pieceType = piece.src[piece.src.length - 6] + piece.src[piece.src.length - 5]
-                currState[y][x] = pieceType
-                currState[clicky][clickx] = 0
+                
+                if (moveLogic(currState, clickx, clicky, x, y)) {
+                    currState[y][x] = currState[clicky][clickx]
+                    currState[clicky][clickx] = 0
+                    whiteTurn = !whiteTurn
+                    reDraw(currState)
+                }
                 piece = null
-                whiteTurn = !whiteTurn
             }
         })
 
@@ -56,3 +79,14 @@ for (let i = 0; i < 8; i++) {
 
     board.appendChild(row)
 }
+
+
+saveButton.onclick = function () {
+    localStorage.setItem('game_state', JSON.stringify(currState))
+    console.log(0)
+}
+loadButton.onclick = function () {
+    currState = JSON.parse(localStorage.getItem('game_state'))
+    reDraw(currState)
+}
+
