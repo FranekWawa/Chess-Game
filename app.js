@@ -8,6 +8,12 @@ function reDraw (state) {
             if (square.hasChildNodes()) {
                 square.removeChild(square.firstChild)
             }
+            let firstWord = square.className.split(" ")[0]
+            if (firstWord === "select" || firstWord === "move" || firstWord === "beat") {
+                square.classList.remove('select')
+                square.classList.remove('beat')
+                square.classList.remove('move')
+            }
             if (state[y][x] != 0) {
 
                 var elem = document.createElement('img')
@@ -38,6 +44,7 @@ for (let i = 0; i < 8; i++) {
         let y = i
         square.id = x + ',' + y
         square.className = 'box'
+        
 
         if (i % 2 != j % 2) {
             square.className += ' black'
@@ -49,10 +56,24 @@ for (let i = 0; i < 8; i++) {
                 clickx = x
                 clicky = y
                 piece = square.firstChild
-
                 if (whiteTurn !== (piece.src[piece.src.length - 5] === 'w')) {
                     piece = null
+                } else {
+                    square.className = 'select ' + square.className
+
+                    for (let k = 0; k < 8; k++) {
+                        for (let p = 0; p < 8; p++) {
+                            let id = p + ',' + k
+                            let space = document.getElementById(id)
+                            if (moveLogic(currState, clickx, clicky, p, k)) {
+                                const newClass = space.hasChildNodes() ? 'beat ' : 'move ';
+                                space.className =  newClass + space.className
+                            }
+
+                        }
+                    }
                 }
+                
             } else if (piece) {
 
                 
@@ -60,8 +81,9 @@ for (let i = 0; i < 8; i++) {
                     currState[y][x] = currState[clicky][clickx]
                     currState[clicky][clickx] = 0
                     whiteTurn = !whiteTurn
-                    reDraw(currState)
+                    
                 }
+                reDraw(currState)
                 piece = null
             }
         })
@@ -83,7 +105,6 @@ for (let i = 0; i < 8; i++) {
 
 saveButton.onclick = function () {
     localStorage.setItem('game_state', JSON.stringify(currState))
-    console.log(0)
 }
 loadButton.onclick = function () {
     currState = JSON.parse(localStorage.getItem('game_state'))

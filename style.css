@@ -3,10 +3,26 @@
     height: 50px;
     display: inline-block;
     margin: 0px;
+    
     background-color: rgb(221, 188, 147);
+
 }
 .black{ 
     background-color: rgb(128, 38, 0);
+
+    
+}
+.move{
+    
+    background-color: green;
+}
+.beat{
+    
+    background-color: red;
+}
+.select{
+    
+    background-color: yellow;
 }
 .row{
     margin: 0px;
