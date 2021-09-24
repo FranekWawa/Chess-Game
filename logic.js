@@ -65,6 +65,24 @@ function isCheck(state, color) {
     }
     return false
 }
+
+function checkMate(state, color) {
+    for (let y1 = 0; y1 < 8; y1++) {
+        for (let x1 = 0; x1 < 8 ; x1++) {
+            if (state[y1][x1] !== 0 && state[y1][x1][1] === color) {
+                for (let y2 = 0; y2 < 8; y2++) {
+                    for (let x2 = 0; x2 < 8 ; x2++) {
+                        if (moveLogic(state, x1, y1, x2, y2)) {
+                            return false
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+    return true
+}
 function canMove(state, x1, y1, x2, y2) {
     let executeMove = true
     if (state[y1][x1] === 0) {
@@ -99,9 +117,6 @@ function canMove(state, x1, y1, x2, y2) {
         if ((color === 'b' && y1 > y2) || (color === 'w' && y1 < y2)) {
             executeMove = false
         }
-        if ((y2 === 7 || y2 === 0) && executeMove === true) {
-            state[y1][x1] = 'q' + color
-        }
         
         
     }
@@ -118,7 +133,7 @@ function canMove(state, x1, y1, x2, y2) {
     return executeMove
 }
 
-export default function moveLogic(state, x1, y1, x2, y2) {
+function moveLogic(state, x1, y1, x2, y2) {
     let executeMove = canMove(state, x1, y1, x2, y2)
     let futureState = []
 
@@ -136,3 +151,5 @@ export default function moveLogic(state, x1, y1, x2, y2) {
     }
     return executeMove
 }
+ 
+export {moveLogic, checkMate}

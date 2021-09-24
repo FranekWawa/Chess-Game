@@ -1,5 +1,5 @@
 import {initState} from './initState.js'
-import moveLogic from './logic.js'
+import {moveLogic, checkMate} from './logic.js'
 function reDraw (state) {
     for (let y = 0; y < 8; y++) {
         for (let x = 0; x < 8; x++) {
@@ -33,6 +33,7 @@ let clickx = null
 let clicky = null
 let piece = null
 let whiteTurn = true
+let color = 'w'
 
 for (let i = 0; i < 8; i++) {
     let row = document.createElement('div')
@@ -66,7 +67,7 @@ for (let i = 0; i < 8; i++) {
                             let id = p + ',' + k
                             let space = document.getElementById(id)
                             if (moveLogic(currState, clickx, clicky, p, k)) {
-                                const newClass = space.hasChildNodes() ? 'beat ' : 'move ';
+                                const newClass = space.hasChildNodes() ? 'beat ' : 'move '
                                 space.className =  newClass + space.className
                             }
 
@@ -80,11 +81,19 @@ for (let i = 0; i < 8; i++) {
                 if (moveLogic(currState, clickx, clicky, x, y)) {
                     currState[y][x] = currState[clicky][clickx]
                     currState[clicky][clickx] = 0
+                    if ((y === 0 || y === 7) && currState[y][x][0] === 'p') {
+                        currState[y][x] = 'q' + color
+                    }
                     whiteTurn = !whiteTurn
+                    color = whiteTurn ? 'w' : 'b'
+
                     
                 }
                 reDraw(currState)
                 piece = null
+            }
+            if (checkMate(currState, color)) {
+                console.log(true)
             }
         })
 
