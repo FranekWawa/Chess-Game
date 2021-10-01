@@ -8,3 +8,4 @@ export const initState = [
     ['pw', 'pw', 'pw', 'pw', 'pw', 'pw', 'pw', 'pw'],
     ['rw', 'nw', 'bw', 'qw', 'kw', 'bw', 'nw', 'rw'],
 ]
+Object.freeze(initState)
