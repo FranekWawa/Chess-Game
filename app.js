@@ -1,8 +1,10 @@
+
 import {initState} from './initState.js'
 import {moveLogic, checkMate} from './logic.js'
 
 // function for re drawing the board
 function reDraw (state) {
+
     for (let y = 0; y < 8; y++) {
         for (let x = 0; x < 8; x++) {
             let id = x + ',' + y
@@ -10,8 +12,12 @@ function reDraw (state) {
             if (square.hasChildNodes()) {
                 square.removeChild(square.firstChild)
             }
-            let firstWord = square.className.split(" ")[0]
-            if (firstWord === "select" || firstWord === "move" || firstWord === "beat") {
+            let firstWord = square.className.split(' ')[0]
+            if (
+                firstWord === 'select' ||
+                firstWord === 'move' ||
+                firstWord === 'beat'
+            ) {
                 square.classList.remove('select')
                 square.classList.remove('beat')
                 square.classList.remove('move')
@@ -20,7 +26,7 @@ function reDraw (state) {
                 var elem = document.createElement('img')
                 elem.className = 'image'
                 elem.src = 'images/' + state[y][x] + '.png'
-                
+
                 square.appendChild(elem)
             }
         }
@@ -66,7 +72,6 @@ for (let i = 0; i < 8; i++) {
                                 const newClass = space.hasChildNodes() ? 'beat ' : 'move '
                                 space.className =  newClass + space.className
                             }
-
                         }
                     }
                 }
