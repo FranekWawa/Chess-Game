@@ -1,5 +1,7 @@
 import {initState} from './initState.js'
 import {moveLogic, checkMate} from './logic.js'
+
+// function for re drawing the board
 function reDraw (state) {
     for (let y = 0; y < 8; y++) {
         for (let x = 0; x < 8; x++) {
@@ -15,7 +17,6 @@ function reDraw (state) {
                 square.classList.remove('move')
             }
             if (state[y][x] != 0) {
-
                 var elem = document.createElement('img')
                 elem.className = 'image'
                 elem.src = 'images/' + state[y][x] + '.png'
@@ -33,27 +34,23 @@ let clickx = null
 let clicky = null
 let piece = null
 let whiteTurn = true
-let color = 'w'
 
+// drawing the board
 for (let i = 0; i < 8; i++) {
     let row = document.createElement('div')
     row.className = 'row'
-
     for (let j = 0; j < 8;j++) {
         let square = document.createElement('div')
         let x = j
         let y = i
         square.id = x + ',' + y
         square.className = 'box'
-        
-
         if (i % 2 != j % 2) {
             square.className += ' black'
         }
         square.addEventListener('click', () => {
-
+            let color = 'w'
             if (square.hasChildNodes() && !piece) {
-
                 clickx = x
                 clicky = y
                 piece = square.firstChild
@@ -61,7 +58,6 @@ for (let i = 0; i < 8; i++) {
                     piece = null
                 } else {
                     square.className = 'select ' + square.className
-
                     for (let k = 0; k < 8; k++) {
                         for (let p = 0; p < 8; p++) {
                             let id = p + ',' + k
@@ -74,10 +70,7 @@ for (let i = 0; i < 8; i++) {
                         }
                     }
                 }
-                
             } else if (piece) {
-
-                
                 if (moveLogic(currState, clickx, clicky, x, y)) {
                     currState[y][x] = currState[clicky][clickx]
                     currState[clicky][clickx] = 0
@@ -86,37 +79,30 @@ for (let i = 0; i < 8; i++) {
                     }
                     whiteTurn = !whiteTurn
                     color = whiteTurn ? 'w' : 'b'
-
-                    
                 }
                 reDraw(currState)
                 piece = null
             }
             if (checkMate(currState, color)) {
-                console.log(true)
+                alert("Check Mate")
             }
         })
-
         if (initState[i][j] != 0) {
-
             var elem = document.createElement('img')
             elem.className = 'image'
             elem.src = 'images/' + initState[i][j] + '.png'
             square.appendChild(elem)
         }
-
         row.appendChild(square)
     }
-
     board.appendChild(row)
 }
-
 
 saveButton.onclick = function () {
     localStorage.setItem('game_state', JSON.stringify(currState))
 }
+
 loadButton.onclick = function () {
     currState = JSON.parse(localStorage.getItem('game_state'))
     reDraw(currState)
 }
-
