@@ -44,15 +44,24 @@ function resetBoard (state1, state2) {
 let board = document.getElementById('board')
 let saveButton = document.getElementById('save')
 let loadButton = document.getElementById('load')
+let backButton = document.getElementById('back')
+let forwardButton = document.getElementById('forward')
 let currState = []
 let clickx = null
 let clicky = null
 let piece = null
 let whiteTurn = true
+let stateIndex = 0;
+let states = [];
+let tempState = [];
 
 for (let i = 0; i < 8; i++) {
     currState.push({ ...initState[i] })
 }
+for (let i = 0; i < 8; i++) {
+    tempState.push({ ...currState[i] })
+}
+states.push({...tempState})
 
 // drawing the board
 for (let i = 0; i < 8; i++) {
@@ -97,7 +106,18 @@ for (let i = 0; i < 8; i++) {
                     }
                     whiteTurn = !whiteTurn
                     color = whiteTurn ? 'w' : 'b'
-                    console.log(initState)
+                    stateIndex ++
+                    for (let i = 0; i < 8; i++) {
+                        tempState[i] = ({ ...currState[i] })
+                    }
+                    if(states[stateIndex] === undefined) {
+                        states.push({...tempState})
+                    } else {
+                        for(let i = states.length; i > stateIndex; i--) {
+                            states.pop()
+                        }
+                        states[stateIndex] = {...tempState}
+                    }
                 }
                 reDraw(currState)
                 piece = null
@@ -128,4 +148,24 @@ loadButton.onclick = function () {
     currState = JSON.parse(localStorage.getItem('game_state'))
     whiteTurn = JSON.parse(localStorage.getItem('turn'))
     reDraw(currState)
+}
+
+backButton.onclick = function () {
+    stateIndex --
+    for (let i = 0; i < 8; i++) {
+        currState[i] = { ...states[stateIndex][i] }
+    }
+    reDraw(currState)
+    whiteTurn = !whiteTurn
+}
+
+forwardButton.onclick = function () {
+    if (states[stateIndex +1] !== undefined) {
+        stateIndex ++
+        for (let i = 0; i < 8; i++) {
+        currState[i] = { ...states[stateIndex][i] }
+        }
+        reDraw(currState)
+        whiteTurn = !whiteTurn
+    }
 }
