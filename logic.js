@@ -168,7 +168,7 @@ function moveLogic(state, x1, y1, x2, y2) {
     for (let i = 0; i < 8; i++) {
         for (let j = 0; j < 8; j++) {
             if ((j === 0 || j === 7) && futureState[j][i][0] === 'p') {
-                futureState[j][i] = 'p' + futureState[j][i][1]
+                futureState[j][i] = 'q' + futureState[j][i][1]
             }
         }
     }
