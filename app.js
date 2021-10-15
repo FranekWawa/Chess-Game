@@ -31,15 +31,22 @@ function reDraw (state) {
             }
         }
     }
+    document.getElementById('board').style.display = 'none';
+    document.getElementById('board').style.display = 'block';
 }
 
 //reset the board
-function resetBoard (state1, state2) {
-    state1 = []
+function resetBoard () {
+    currState = []
+    states = []
     for (let i = 0; i < 8; i++) {
-        state1.push({ ...state2[i] })
+        currState.push({ ...initState[i] })
     }
-    return state1
+    for (let i = 0; i < 8; i++) {
+        tempState.push({ ...currState[i] })
+    }
+    states.push({...tempState})
+    stateIndex = 0
 }
 let board = document.getElementById('board')
 let saveButton = document.getElementById('save')
@@ -55,13 +62,7 @@ let stateIndex = 0;
 let states = [];
 let tempState = [];
 
-for (let i = 0; i < 8; i++) {
-    currState.push({ ...initState[i] })
-}
-for (let i = 0; i < 8; i++) {
-    tempState.push({ ...currState[i] })
-}
-states.push({...tempState})
+resetBoard()
 
 // drawing the board
 for (let i = 0; i < 8; i++) {
@@ -123,8 +124,11 @@ for (let i = 0; i < 8; i++) {
                 piece = null
             }
             if (checkMate(currState, color)) {
+                reDraw(currState)
+                console.log(currState)
                 if (confirm("Check Mate! Do you want to reset?")) {
-                    reDraw(resetBoard(currState, initState))
+                    resetBoard()
+                    reDraw(currState)
                 }
             }
         })
