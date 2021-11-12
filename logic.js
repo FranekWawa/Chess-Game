@@ -28,13 +28,7 @@ function knightMoveCheck(state, x1, y1, x2, y2) {
         (Math.abs(x1 - x2) === 1 && Math.abs(y1 - y2) === 2) ||
         (Math.abs(x1 - x2) === 2 && Math.abs(y1 - y2) === 1)
     ) {
-        if (
-            (state[y2][x2] !== 0 && state[y2][x2][1] === state[y1][x1][1]) ||
-            state[y2][x2][0] === 'k'
-        ) {
-            return false
-        }
-        return true
+        return !(state[y2][x2] !== 0 && state[y2][x2][1] === state[y1][x1][1])
     }
     return false
 }
@@ -90,7 +84,6 @@ function checkMate(state, color) {
                     }
                 }
             }
-
         }
     }
     return true
@@ -137,9 +130,6 @@ function canMove(state, x1, y1, x2, y2) {
 
         if ((color === 'b' && y1 > y2) || (color === 'w' && y1 < y2)) {
             executeMove = false
-        }
-        if ((y2 === 7 || y2 === 0) && executeMove === true) {
-            state[y1][x1] = 'q' + color
         }
     }
     if (piece === 'q') {
