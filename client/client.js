@@ -1,6 +1,17 @@
-
-import {initState} from '../initState.js'
+import { initState } from './initState.js';
 import {moveLogic, checkMate} from '../logic.js'
+
+//socket
+const sock = io();
+sock.on('state',(state) => {
+    let newState = JSON.parse(state)
+    currState = newState.currState
+    whiteTurn = newState.whiteTurn
+    reDraw(currState)
+})
+
+//updating state
+//function updateState()
 
 // function for re drawing the board
 function reDraw (state) {
@@ -121,6 +132,7 @@ for (let i = 0; i < 8; i++) {
                     }
                 }
                 reDraw(currState)
+                sock.emit('state', JSON.stringify({ currState, whiteTurn }))
                 piece = null
             }
             if (checkMate(currState, color)) {
@@ -129,6 +141,7 @@ for (let i = 0; i < 8; i++) {
                 if (confirm("Check Mate! Do you want to reset?")) {
                     resetBoard()
                     reDraw(currState)
+                    sock.emit('state', JSON.stringify({ currState, whiteTurn }))
                 }
             }
         })
