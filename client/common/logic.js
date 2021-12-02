@@ -1,4 +1,3 @@
-
 // this function checks if a horizontal, vertical or diagonal move can be performed
 function moveCheck (state, x1, y1, x2, y2) {
     let dY = Math.sign(y2 - y1)

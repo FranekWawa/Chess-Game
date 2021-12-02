@@ -1,5 +1,5 @@
-import { initState } from './initState.js';
-import {moveLogic, checkMate} from '../logic.js'
+import { initState } from './common/constants.js';
+import { moveLogic, checkMate } from './common/logic.js'
 
 //socket
 const sock = io();
