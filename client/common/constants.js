@@ -7,5 +7,5 @@ export const initState = [
     [0, 0, 0, 0, 0, 0, 0, 0],
     ['pw', 'pw', 'pw', 'pw', 'pw', 'pw', 'pw', 'pw'],
     ['rw', 'nw', 'bw', 'qw', 'kw', 'bw', 'nw', 'rw'],
-]
-Object.freeze(initState)
+];
+Object.freeze(initState);
